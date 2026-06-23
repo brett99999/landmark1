@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Access to Agency — Workshop Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A22;
+    --ink-soft:#2C4536;
+    --parchment:#F6F1E4;
+    --parchment-dim:#EEE7D4;
+    --gold:#C68A33;
+    --gold-soft:#E7C998;
+    --clay:#B14B32;
+    --green-zone:#4C7A4A;
+    --yellow-zone:#B8893A;
+    --red-zone:#B14B32;
+    --line:#D8CFB5;
+    --ink-on-parchment:#22301F;
+    --max:700px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--ink-on-parchment);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0 0 .4em 0; color:var(--ink);}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.7rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(198,138,51,0.25), transparent 55%),
+      var(--ink);
+    color:var(--parchment);
+    padding:2.4rem 1.4rem 2rem;
+    position:relative;
+  }
+  .hero .eyebrow{color:var(--gold-soft);}
+  .hero h1{
+    color:var(--parchment);
+    font-size:clamp(1.5rem,5.5vw,2.1rem);
+    font-weight:600;
+    margin-top:.3rem;
+    max-width:20ch;
+  }
+  .hero .throughline{
+    color:#CFC8B4;
+    max-width:48ch;
+    font-size:.92rem;
+    margin-top:.5rem;
+    font-style:italic;
+  }
+
+  /* ---------- NAV ---------- */
+  .trailnav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,241,228,0.96);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:.5rem .6rem;
+    display:flex;
+    gap:.3rem;
+    overflow-x:auto;
+  }
+  .trailnav button{
+    flex:0 0 auto;
+    appearance:none; border:none; background:transparent;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.64rem;
+    letter-spacing:.03em;
+    color:var(--ink-soft);
+    padding:.45rem .55rem;
+    border-radius:8px;
+    text-align:center;
+    cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:.2rem;
+    white-space:nowrap;
+  }
+  .trailnav button .dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--line);
+    transition:background .2s, transform .2s;
+  }
+  .trailnav button.active{color:var(--ink); font-weight:700;}
+  .trailnav button.active .dot{background:var(--gold); transform:scale(1.3);}
+
+  /* ---------- SECTIONS ---------- */
+  main{max-width:var(--max); margin:0 auto; padding:0 1.1rem;}
+  .station{
+    padding:2.2rem 0 1rem;
+    border-left:2px dashed var(--line);
+    margin-left:10px;
+    padding-left:1.4rem;
+    position:relative;
+    scroll-margin-top:60px;
+  }
+  .station:last-child{border-left:2px dashed transparent;}
+  .marker{
+    position:absolute; left:-13px; top:2.3rem;
+    width:24px; height:24px; border-radius:50%;
+    background:var(--parchment);
+    border:2px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.65rem; font-weight:700; color:var(--ink);
+  }
+  .station-head{display:flex; justify-content:space-between; align-items:baseline; gap:.6rem; flex-wrap:wrap;}
+  .station h2{font-size:1.3rem; margin-top:.5rem;}
+  .station .sub{color:var(--ink-soft); font-size:.9rem; max-width:54ch; margin-bottom:1rem;}
+
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:1rem 1.05rem 1.1rem;
+    margin-bottom:.9rem;
+  }
+  .card h3{font-size:.92rem; font-family:'Inter',sans-serif; font-weight:700; margin-bottom:.55rem; color:var(--ink); display:flex; align-items:center; justify-content:space-between; gap:.5rem;}
+  .card p, .card li{font-size:.88rem;}
+  .card ul{margin:.3rem 0; padding-left:1.1rem;}
+  .card li{margin-bottom:.25rem;}
+
+  .invite-card{
+    border-left:4px solid var(--gold);
+    background:#FBF6EA;
+  }
+  .invite-card h3{color:var(--gold); display:block;}
+  .invite-card a{
+    color:var(--clay);
+    font-weight:600;
+    text-decoration:none;
+    border-bottom:1px solid var(--gold-soft);
+    word-break:break-word;
+  }
+  .invite-card a:hover{border-bottom-color:var(--clay);}
+
+  .field-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
+    gap:.5rem;
+    margin-top:.4rem;
+  }
+  .field{
+    border:1px dashed var(--line);
+    border-radius:8px;
+    padding:.45rem .6rem;
+    font-size:.8rem;
+    color:#6b6353;
+    background:var(--parchment-dim);
+  }
+  .field b{display:block; color:var(--ink-soft); font-size:.72rem; text-transform:uppercase; letter-spacing:.03em; margin-bottom:.15rem; font-weight:700;}
+
+  .checklist{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.5rem;}
+  .checklist span{
+    font-size:.78rem;
+    border:1px solid var(--line);
+    background:var(--parchment-dim);
+    border-radius:20px;
+    padding:.25rem .65rem;
+    color:var(--ink-soft);
+  }
+
+  .zone{border-radius:10px; padding:.65rem .8rem; margin-bottom:.5rem; font-size:.85rem; border:1px solid;}
+  .zone.green{background:#EFF6ED; border-color:#BBD8B4; }
+  .zone.yellow{background:#FBF1DF; border-color:#ECC98C;}
+  .zone.red{background:#FAEAE5; border-color:#E3B5A6;}
+  .zone .zlabel{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; display:block; margin-bottom:.2rem;}
+  .zone.green .zlabel{color:var(--green-zone);}
+  .zone.yellow .zlabel{color:var(--yellow-zone);}
+  .zone.red .zlabel{color:var(--red-zone);}
+
+  .quote{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:1.02rem;
+    color:var(--ink);
+    border-left:3px solid var(--gold);
+    padding-left:.8rem;
+    margin:.6rem 0;
+  }
+
+  /* timer */
+  .timer-wrap{display:flex; align-items:center; gap:.6rem; margin-top:.6rem;}
+  .timer-display{
+    font-family:'JetBrains Mono',monospace;
+    font-size:1.3rem; font-weight:700; color:var(--ink);
+    min-width:64px;
+  }
+  .timer-btn{
+    appearance:none; border:1px solid var(--line); background:var(--parchment-dim);
+    border-radius:8px; padding:.4rem .8rem; font-family:'Inter',sans-serif;
+    font-size:.78rem; font-weight:600; cursor:pointer; color:var(--ink-soft);
+  }
+  .timer-btn:active{transform:scale(.97);}
+  .timer-btn.start{background:var(--ink); color:var(--parchment); border-color:var(--ink);}
+
+  .keynote-card{
+    background:var(--ink);
+    color:var(--parchment);
+    border-radius:16px;
+    padding:1.3rem 1.3rem 1.4rem;
+    margin:1.2rem 0;
+    position:relative;
+    overflow:hidden;
+  }
+  .keynote-card::before{
+    content:"";
+    position:absolute; top:-30%; right:-15%;
+    width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle, rgba(198,138,51,0.3), transparent 70%);
+  }
+  .keynote-card .eyebrow{color:var(--gold-soft);}
+  .keynote-card h3{color:var(--parchment); font-family:'Fraunces',serif; font-size:1.15rem; margin-top:.3rem;}
+  .keynote-card p{color:#D9D2BE; font-size:.88rem; position:relative; z-index:1;}
+  .keynote-card .line{
+    font-style:italic;
+    border-left:2px solid var(--gold);
+    padding-left:.7rem;
+    margin-top:.6rem;
+    color:#EDE8D8;
+  }
+
+  footer{
+    max-width:var(--max); margin:0 auto;
+    padding:1.2rem 1.1rem 3rem;
+    color:#6b6353; font-size:.76rem;
+  }
+
+  .reveal{opacity:0; transform:translateY(8px); animation:rise .5s ease forwards;}
+  @keyframes rise{to{opacity:1; transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Landmark College &middot; Access to Agency</div>
+  <h1>Workshop Guide — ONE, TWO, THREE</h1>
+  <p class="throughline">Reduce needless friction. Preserve productive challenge. Expand student agency. A shortcut bypasses learning; a scaffold helps the learner reach it. Widen the doorway without lowering the ceiling.</p>
+</header>
+
+<nav class="trailnav" id="trailnav">
+  <button data-target="opening" class="active"><span class="dot"></span>Open</button>
+  <button data-target="exercise-one"><span class="dot"></span>ONE</button>
+  <button data-target="exercise-two"><span class="dot"></span>TWO</button>
+  <button data-target="exercise-three"><span class="dot"></span>THREE</button>
+  <button data-target="closing"><span class="dot"></span>Close</button>
+  <button data-target="resources"><span class="dot"></span>More</button>
+</nav>
+
+<main>
+
+  <!-- OPENING -->
+  <section class="station" id="opening">
+    <div class="marker">·</div>
+    <div class="station-head">
+      <h2>Welcome</h2>
+    </div>
+    <div class="card">
+      <p class="quote">Reduce needless friction. Preserve productive challenge. Expand student agency.</p>
+      <p class="quote">A shortcut bypasses learning. A scaffold helps the learner reach it.</p>
+      <p class="quote">Widen the doorway without lowering the ceiling.</p>
+    </div>
+    <div class="card">
+      <p>Today you'll leave with one launch-ready change you can bring back to your own classroom, advising practice, or institution — built around a real student, with a real team, using real tools.</p>
+    </div>
+    <div class="card invite-card">
+      <h3>Share your intervention</h3>
+      <p>Built something you're proud of? Send your launch-ready intervention to <a href="mailto:maureen@autismcommunityventures.org">maureen@autismcommunityventures.org</a>, and Maureen will respond with feedback as time allows.</p>
+    </div>
+  </section>
+
+  <!-- EXERCISE ONE -->
+  <section class="station" id="exercise-one">
+    <div class="marker">1</div>
+    <div class="station-head">
+      <h2>ONE — Strength-Based Student Profile</h2>
+    </div>
+    <p class="sub">Work as a pod. Build one profile together — a real or composite student. Talk it through; nothing needs to be typed here.</p>
+
+    <div class="card">
+      <h3>Composite or Real Pattern</h3>
+      <div class="field-row">
+        <div class="field"><b>Learner / context</b>who are we describing?</div>
+        <div class="field"><b>Course / program / process</b>where does this show up?</div>
+        <div class="field"><b>Current challenge</b>what's the real friction point?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Strengths &amp; Assets</h3>
+      <p>What strengths may be present? Circle what fits, add what's missing.</p>
+      <div class="checklist">
+        <span>Pattern detection</span><span>Creativity</span><span>Empathy</span>
+        <span>Systems thinking</span><span>Visual-spatial reasoning</span><span>Hyperfocus</span>
+        <span>Verbal reasoning</span><span>Hands-on problem solving</span><span>Ethical seriousness</span>
+        <span>Persistence</span><span>Originality</span><span>Big-picture synthesis</span>
+        <span>Detail orientation</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Profile Table</h3>
+      <div class="field-row">
+        <div class="field"><b>Areas of strength</b></div>
+        <div class="field"><b>Areas of friction</b></div>
+        <div class="field"><b>Looks inconsistent from outside</b></div>
+        <div class="field"><b>Makes sense from inside</b></div>
+        <div class="field"><b>Conditions for thriving</b></div>
+        <div class="field"><b>Communication preferences</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Translation Gap</h3>
+      <p class="quote">What might be misunderstood if this learner were judged too early?</p>
+      <div class="timer-wrap">
+        <span class="timer-display" id="timer-display-1">5:00</span>
+        <button class="timer-btn start" onclick="startTimer(1,300)">Start</button>
+        <button class="timer-btn" onclick="resetTimer(1,300)">Reset</button>
+      </div>
+    </div>
+
+    <div class="keynote-card">
+      <h3>Seeing the student is the purpose.</h3>
+      <p class="line">That translation gap you just named — that's not a side note. That's the whole reason we do this work. Diverse perspectives aren't a constraint on education's future. They're essential to it.</p>
+    </div>
+  </section>
+
+  <!-- EXERCISE TWO -->
+  <section class="station" id="exercise-two">
+    <div class="marker">2</div>
+    <div class="station-head">
+      <h2>TWO — AI Scaffold Studio</h2>
+    </div>
+    <p class="sub">Build one AI scaffold for your student from ONE, test it against use boundaries, then run a risk check.</p>
+
+    <div class="card">
+      <h3>AI Scaffold Studio</h3>
+      <p>Reference — five common use-cases:</p>
+      <ul>
+        <li><b>Planning</b> — "Turn this assignment into a checklist. Do not do the work for me."</li>
+        <li><b>Reading</b> — "Identify the main argument, key terms, and questions to guide my reading."</li>
+        <li><b>Writing initiation</b> — "Ask me one question at a time to help me clarify my argument. Do not write the essay."</li>
+        <li><b>Feedback</b> — "Tell me whether my evidence supports my claim. Do not rewrite it for me."</li>
+        <li><b>College access</b> — "Explain these steps in plain language and make a checklist. Tell me what information I should not enter."</li>
+      </ul>
+      <div class="field-row">
+        <div class="field"><b>This support helps students</b></div>
+        <div class="field"><b>Approved prompt</b></div>
+        <div class="field"><b>AI may</b></div>
+        <div class="field"><b>AI may not</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Green / Yellow / Red AI Use Builder</h3>
+      <div class="zone green"><span class="zlabel">Green — encouraged</span>Clarify instructions, brainstorm, build a study plan, explain concepts, support accessibility.</div>
+      <div class="zone yellow"><span class="zlabel">Yellow — disclose / reflect</span>Feedback on drafts, outlines, grammar or clarity support, revision suggestions.<br><span class="quote" style="font-size:.82rem; margin-top:.4rem;">"I used AI to ___. I accepted ___. I rejected ___. The final thinking is mine because ___."</span></div>
+      <div class="zone red"><span class="zlabel">Red — not allowed</span>Submit generated work as one's own, fabricate sources, bypass the learning objective, enter sensitive or private data.</div>
+    </div>
+
+    <div class="card">
+      <h3>Risk and Agency Check</h3>
+      <p>Fast pass — yes or revise, for each:</p>
+      <div class="checklist">
+        <span>Privacy</span><span>Disclosure</span><span>Voice</span><span>Overreliance</span>
+        <span>Integrity</span><span>Access</span><span>Human loop</span><span>Challenge</span>
+      </div>
+      <div class="timer-wrap">
+        <span class="timer-display" id="timer-display-2">6:00</span>
+        <button class="timer-btn start" onclick="startTimer(2,360)">Start</button>
+        <button class="timer-btn" onclick="resetTimer(2,360)">Reset</button>
+      </div>
+    </div>
+
+    <div class="keynote-card">
+      <h3>AI is one tool on a bigger shelf.</h3>
+      <p class="line">Everything you just tiered into green, yellow, and red — that same test applies to every assistive tool a student touches, not just AI. A support is helpful if it reduces load, increases choice, builds skill, can be used without shame, and avoids unnecessary data collection. It needs revision if it adds steps, creates surveillance, replaces the learning goal, requires disclosure, or overwhelms the student.</p>
+    </div>
+  </section>
+
+  <!-- EXERCISE THREE -->
+  <section class="station" id="exercise-three">
+    <div class="marker">3</div>
+    <div class="station-head">
+      <h2>THREE — Team Redesign Sprint</h2>
+    </div>
+    <p class="sub">Three checkpoints, in order. Work as an actual team — not just a group sitting near each other.</p>
+
+    <div class="card">
+      <h3>Checkpoint A — Team Collaboration Canvas</h3>
+      <p>Before any content work: form as a team.</p>
+      <div class="field-row">
+        <div class="field"><b>Shared goal</b></div>
+        <div class="field"><b>What outcome matters most</b></div>
+      </div>
+      <p style="margin-top:.6rem;">Strengths needed in the room:</p>
+      <div class="checklist">
+        <span>Detail tracking</span><span>Big-picture synthesis</span><span>Pattern detection</span>
+        <span>Relationship-building</span><span>Writing</span><span>Visual design</span>
+        <span>Task management</span><span>Risk spotting</span><span>Creative ideation</span>
+        <span>Follow-through</span><span>Lived experience</span>
+      </div>
+      <p style="margin-top:.6rem;">Team norms — talk through each:</p>
+      <div class="field-row">
+        <div class="field"><b>How we meet</b></div>
+        <div class="field"><b>How we communicate</b></div>
+        <div class="field"><b>How we decide</b></div>
+        <div class="field"><b>How we handle silence</b></div>
+        <div class="field"><b>How we invite dissent</b></div>
+        <div class="field"><b>How we use AI</b></div>
+        <div class="field"><b>How we track tasks</b></div>
+        <div class="field"><b>How we repair misunderstanding</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Checkpoint B — UDL 3.0 / Universal Design 2.0 Canvas</h3>
+      <p>Apply to one real assignment, practice, or policy a pod member owns.</p>
+      <div class="field-row">
+        <div class="field"><b>Engagement</b>more relevance, choice, clarity, or emotional safety?</div>
+        <div class="field"><b>Representation</b>more than one format?</div>
+        <div class="field"><b>Action &amp; expression</b>without unnecessary barriers?</div>
+        <div class="field"><b>Executive function</b>where can planning/sequencing be scaffolded?</div>
+        <div class="field"><b>Cognitive load</b>what can be chunked or simplified?</div>
+        <div class="field"><b>Agency</b>where does the student choose?</div>
+        <div class="field"><b>Co-creation</b>how could students help refine this?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Checkpoint C — Micro-Intervention Launch Card</h3>
+      <div class="field-row">
+        <div class="field"><b>Intervention name</b></div>
+        <div class="field"><b>Where implemented</b></div>
+        <div class="field"><b>Who it's for</b></div>
+        <div class="field"><b>Friction it reduces</b></div>
+        <div class="field"><b>Challenge it preserves</b></div>
+        <div class="field"><b>Student strength it may reveal</b></div>
+        <div class="field"><b>AI / support involved</b></div>
+        <div class="field"><b>Guardrails needed</b></div>
+        <div class="field"><b>First step — 48 hours</b></div>
+        <div class="field"><b>Launch date</b></div>
+        <div class="field"><b>How feedback will be gathered</b></div>
+      </div>
+      <p class="quote" style="margin-top:.7rem;">"This intervention expands agency because ___."</p>
+      <div class="timer-wrap">
+        <span class="timer-display" id="timer-display-3">8:00</span>
+        <button class="timer-btn start" onclick="startTimer(3,480)">Start</button>
+        <button class="timer-btn" onclick="resetTimer(3,480)">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSE -->
+  <section class="station" id="closing">
+    <div class="marker">·</div>
+    <div class="station-head">
+      <h2>Evidence of Agency Reflection</h2>
+    </div>
+    <p class="sub">Individual, silent or paired — this one's just for you.</p>
+    <div class="card">
+      <p class="quote">Students build evidence one step at a time. Educators design the conditions where that evidence can become visible.</p>
+      <div class="field-row">
+        <div class="field"><b>One student I may understand differently now</b></div>
+        <div class="field"><b>One friction point I can remove</b></div>
+        <div class="field"><b>One support I can make universal</b></div>
+        <div class="field"><b>One productive challenge I will preserve</b></div>
+        <div class="field"><b>One AI boundary I need to clarify</b></div>
+        <div class="field"><b>One thing I will do within two weeks</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADDITIONAL RESOURCES -->
+  <section class="station" id="resources">
+    <div class="marker">·</div>
+    <div class="station-head">
+      <h2>Additional Resources</h2>
+    </div>
+    <p class="sub">How this work moved from a single statement to the Illinois statehouse.</p>
+
+    <div class="card">
+      <h3>From a Statement to State Legislation</h3>
+      <p style="font-size:.88rem; color:#3A4A3F; margin-bottom:.7rem;">In September 2022, under the leadership of its then-president Maureen Dunne, the Illinois Community College Trustees Association — representing 48 colleges serving over 700,000 students — adopted a Neurodiversity Inclusion Statement, becoming among the first higher-education entities in the United States to do so.</p>
+
+      <p style="font-size:.88rem; color:#3A4A3F; margin-bottom:.7rem;">That action reached the statehouse. In 2023, the Illinois House of Representatives passed House Resolution 219, formally recognizing ICCTA's leadership and resolving:</p>
+
+      <p class="quote">"That we encourage Illinois' institutions of higher education to embrace the neurodiversity paradigm and adopt a statement of inclusivity of neurodivergent individuals that appreciates and embraces the fact that every student is different and should be encouraged to reach their full potential."</p>
+
+      <p style="font-size:.85rem; color:#5b6b5f; margin-top:.7rem;">The work continued: in the 104th General Assembly, the Illinois Senate passed Senate Resolution 31, encouraging neurodivergence education in K-8 schools — extending the same commitment into earlier grades.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Access to Agency · Workshop Guide · Landmark College, June 2026<br>
+  &copy; 2026 Maureen Dunne. All rights reserved.
+</footer>
+
+<script>
+  // ---- simple per-beat countdown timers (visual pacing aid only, no storage) ----
+  const timers = {};
+  function startTimer(id, seconds){
+    if (timers[id] && timers[id].interval) return; // already running
+    const display = document.getElementById('timer-display-' + id);
+    let remaining = timers[id] && timers[id].remaining !== undefined ? timers[id].remaining : seconds;
+    timers[id] = timers[id] || {};
+    timers[id].remaining = remaining;
+    timers[id].interval = setInterval(() => {
+      timers[id].remaining--;
+      const r = timers[id].remaining;
+      if (r <= 0){
+        clearInterval(timers[id].interval);
+        timers[id].interval = null;
+        display.textContent = "0:00";
+        display.style.color = "var(--clay)";
+        return;
+      }
+      const m = Math.floor(r/60);
+      const s = r % 60;
+      display.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+    }, 1000);
+  }
+  function resetTimer(id, seconds){
+    if (timers[id] && timers[id].interval) clearInterval(timers[id].interval);
+    timers[id] = {remaining: seconds, interval: null};
+    const display = document.getElementById('timer-display-' + id);
+    const m = Math.floor(seconds/60);
+    const s = seconds % 60;
+    display.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+    display.style.color = "var(--ink)";
+  }
+
+  // ---- nav scroll + active state ----
+  const navButtons = document.querySelectorAll(".trailnav button");
+  navButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById(btn.dataset.target).scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  });
+  const sections = document.querySelectorAll(".station");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navButtons.forEach(b => b.classList.remove("active"));
+        const match = document.querySelector(`.trailnav button[data-target="${entry.target.id}"]`);
+        if (match) match.classList.add("active");
+      }
+    });
+  }, {rootMargin: "-40% 0px -50% 0px"});
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
